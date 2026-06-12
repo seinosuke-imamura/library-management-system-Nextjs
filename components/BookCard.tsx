@@ -25,3 +25,4 @@ export function BookCard({ book, onBorrow, borrowingBookId }: BookCardProps) {
         </>
     );
 }
+
