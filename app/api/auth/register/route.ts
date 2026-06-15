@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     if (!body.success) {
         return Response.json({ success:false, error: {message: "400: Invalid request body", code: "BAD_REQUEST", details: body.error.format()}}, {status: 400});
     }
-    if (await db.select().from(users).where(eq(users.username, body.data.username)).limit(1).get()) {
+    if ((await db.select().from(users).where(eq(users.username, body.data.username)).limit(1))[0]) {
         return Response.json({ success:false, error: {message: "400: User already exists", code: "BAD_REQUEST"}}, {status: 400});
     }
     const user = await db.insert(users).values({ id: randomUUID(), username: body.data.username, password: await hash(body.data.password, 10), role: "USER" }).returning();

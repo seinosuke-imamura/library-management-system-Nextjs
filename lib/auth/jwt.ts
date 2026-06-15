@@ -14,7 +14,7 @@ export async function sign(payload: {userId: string, userRole: "ADMIN" | "STAFF"
 
 export async function verify(token: string) {
   const {payload} = await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET as string));
-  const user = await db.select().from(users).where(eq(users.id, payload.userId as string)).limit(1).get();
+  const user = (await db.select().from(users).where(eq(users.id, payload.userId as string)).limit(1))[0];
   if (!user) {
     throw new Error('User not found');
   }

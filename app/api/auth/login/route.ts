@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     if (!body.success) {
         return Response.json({ success:false, error: {message: "400: Invalid request body", code: "BAD_REQUEST", details: body.error.format()}}, {status: 400});
     }
-    const user = await db.select().from(users).where(eq(users.username, body.data.username)).limit(1).get();
+    const user = (await db.select().from(users).where(eq(users.username, body.data.username)).limit(1))[0];
     if (!user?.id) {
         return Response.json({ success:false, error: {message: "404: User not found", code: "NOT_FOUND"}}, {status: 404});
     }

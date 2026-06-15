@@ -1,14 +1,14 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, pgTable, text } from "drizzle-orm/pg-core";
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 
-export const users = sqliteTable("users", {
+export const users = pgTable("users", {
   id: text("id").primaryKey(),
   username: text("username").notNull(),
   password: text("password").notNull(),
   role: text("role", { enum: ["ADMIN", "STAFF", "USER"] }).notNull(),
 });
 
-export const books = sqliteTable("books", {
+export const books = pgTable("books", {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
   author: text("author").notNull(),
@@ -20,7 +20,7 @@ export const books = sqliteTable("books", {
   stock: integer("stock").notNull(),
 });
 
-export const rentals = sqliteTable("rentals", {
+export const rentals = pgTable("rentals", {
   id: text("id").primaryKey(),
   userId: text("userId").notNull(),
   bookId: text("bookId").notNull(),

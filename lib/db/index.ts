@@ -1,5 +1,5 @@
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 import * as schema from "./schema";
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -8,13 +8,13 @@ if (!databaseUrl) {
 }
 
 const globalForDb = globalThis as unknown as {
-  sqlite?: Database.Database;
+  pool?: Pool;
 };
 
-const sqlite = globalForDb.sqlite ?? new Database(databaseUrl);
+const pool = globalForDb.pool ?? new Pool({ connectionString: databaseUrl });
 
 if (process.env.NODE_ENV !== "production") {
-  globalForDb.sqlite = sqlite;
+  globalForDb.pool = pool;
 }
 
-export const db = drizzle(sqlite, { schema });
+export const db = drizzle(pool, { schema });
